@@ -1,0 +1,33 @@
+CREATE DATABASE addNumDb
+
+USE addNumDb
+
+CREATE TABLE league (
+  team_name varchar(50) PRIMARY KEY,
+  goals_conceded int DEFAULT 0,
+  goals_scored int DEFAULT 0,
+  goal_difference int GENERATED ALWAYS AS (goals_scored-goals_conceded),
+  points int DEFAULT 0
+);
+
+/* add teams to league table */
+INSERT INTO league (team_name) VALUES ('Bradford');
+INSERT INTO league (team_name) VALUES ('Leeds');
+INSERT INTO league (team_name) VALUES ('Halifax');
+
+/*upadating league with fixture results */
+
+/* 1-0 win for Bradford over Halifax */
+UPDATE league SET points=points+3, goals_scored=goals_scored+1 WHERE team_name='Bradford';
+UPDATE league SET goals_conceded=goals_conceded+1 WHERE team_name='Halifax';
+
+/* 1-1 draw between Bradford and Leeds */
+UPDATE league SET goals_conceded=goals_conceded+1, goals_scored=goals_scored+1, points=points+1  WHERE team_name='Bradford';
+UPDATE league SET goals_conceded=goals_conceded+1, goals_scored=goals_scored+1, points=points+1  WHERE team_name='Leeds';
+
+/* 2-0 win for Leeds over Halifax */
+UPDATE league SET points=points+3, goals_scored=goals_scored+2 WHERE team_name='Leeds';
+UPDATE league SET goals_conceded=goals_conceded+2 WHERE team_name='Halifax';
+
+/* view ordered league table */
+SELECT * FROM league ORDER BY points DESC, goals_scored DESC, team_name;
